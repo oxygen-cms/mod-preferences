@@ -14,7 +14,7 @@ use Preferences;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Oxygen\Core\Blueprint\Manager as BlueprintManager;
+use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
 use Oxygen\Core\Controller\BlueprintController;
 use Oxygen\Core\Http\Notification;
 

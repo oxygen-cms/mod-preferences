@@ -4,7 +4,7 @@ namespace OxygenModule\Preferences;
 
 use Illuminate\Support\ServiceProvider;
 
-use Oxygen\Core\Blueprint\Manager;
+use Oxygen\Core\Blueprint\BlueprintManager;
 use Oxygen\Core\Html\Navigation\Navigation;
 use Oxygen\Preferences\Loader\ConfigLoader;
 
@@ -27,7 +27,7 @@ class PreferencesServiceProvider extends ServiceProvider {
 	public function boot() {
 		$this->package('oxygen/preferences', 'oxygen/preferences', __DIR__ . '/../resources');
 
-        $this->app[Manager::class]->loadDirectory(__DIR__ . '/../resources/blueprints');
+        $this->app[BlueprintManager::class]->loadDirectory(__DIR__ . '/../resources/blueprints');
 
         $this->addNavigationItems();
 	}
@@ -39,7 +39,7 @@ class PreferencesServiceProvider extends ServiceProvider {
 	 */
 
 	public function addNavigationItems() {
-		$blueprint = $this->app[Manager::class]->get('Preferences');
+		$blueprint = $this->app[BlueprintManager::class]->get('Preferences');
 		$nav = $this->app[Navigation::class];
 
 		$nav->add($blueprint->getToolbarItem('getView'));
