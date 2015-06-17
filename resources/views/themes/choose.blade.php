@@ -4,7 +4,7 @@
 
 <?php
 
-use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Header\Header;
+use Oxygen\Core\Form\Form;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Header\Header;
     use Oxygen\Core\Html\Form\Footer;
     use Oxygen\Core\Html\Form\EditableField;use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
 
@@ -27,11 +27,9 @@ $header = Header::fromBlueprint(
 
 <?php
 
-    echo Form::open([
-        'route' => [$blueprint->getRouteName('putUpdate'), $schema->getKey()],
-        'method' => 'PUT',
-        'class' => 'Form--sendAjax Form--warnBeforeExit Form--submitOnKeydown Form--themes'
-    ]);
+    $form = new Form($blueprint->getAction('putUpdate'));
+    $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
+    $form->addClass('Form--themes');
 
     $themes = Theme::all();
 ?>
