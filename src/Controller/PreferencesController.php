@@ -37,9 +37,9 @@ class PreferencesController extends BlueprintController {
      */
     public function getView($group = null) {
         $title = Preferences::isRoot($group) ? '' : Preferences::group($group) . ' ';
-        $title .= Lang::get('oxygen/preferences::ui.home.title');
+        $title .= Lang::get('oxygen/mod-preferences::ui.home.title');
 
-        return View::make('oxygen/preferences::list', [
+        return View::make('oxygen/mod-preferences::list', [
             'group' => $group,
             'title' => $title
         ]);
@@ -53,11 +53,11 @@ class PreferencesController extends BlueprintController {
     public function getUpdate($key) {
         $schema = $this->getSchema($key);
 
-        $view = $schema->hasView() ? $schema->getView() : 'oxygen/preferences::update';
+        $view = $schema->hasView() ? $schema->getView() : 'oxygen/mod-preferences::update';
 
         return View::make($view, [
             'schema' => $schema,
-            'title' => Lang::get('oxygen/preferences::ui.update.title', ['name' => $schema->getTitle()]) . ' ' . Lang::get('oxygen/preferences::ui.home.title')
+            'title' => Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()]) . ' ' . Lang::get('oxygen/mod-preferences::ui.home.title')
         ]);
     }
 
@@ -81,7 +81,7 @@ class PreferencesController extends BlueprintController {
         $schema->storeRepository();
 
         return Response::notification(
-            new Notification(Lang::get('oxygen/preferences::messages.updated')),
+            new Notification(Lang::get('oxygen/mod-preferences::messages.updated')),
             ['refresh' => true, 'hardRedirect' => true]
         );
     }

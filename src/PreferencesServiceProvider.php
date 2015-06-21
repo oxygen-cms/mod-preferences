@@ -25,7 +25,8 @@ class PreferencesServiceProvider extends ServiceProvider {
 	 */
 
 	public function boot() {
-		$this->package('oxygen/preferences', 'oxygen/preferences', __DIR__ . '/../resources');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen/mod-preferences');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'oxygen/mod-preferences');
 
         $this->app[BlueprintManager::class]->loadDirectory(__DIR__ . '/../resources/blueprints');
 
