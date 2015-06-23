@@ -1,6 +1,6 @@
 <?php
 
-namespace Oxygen\OxygenModule\Controller;
+namespace OxygenModule\Preferences\Controller;
 
 use Exception;
 

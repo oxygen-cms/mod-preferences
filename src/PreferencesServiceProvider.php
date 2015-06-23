@@ -52,6 +52,6 @@ class PreferencesServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register() {
-        // TODO: Implement register() method.
+
     }
 }
