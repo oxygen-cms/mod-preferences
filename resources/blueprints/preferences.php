@@ -1,7 +1,9 @@
 <?php
 
+use OxygenModule\Preferences\Controller\PreferencesController;
+
 Blueprint::make('Preferences', function($blueprint) {
-    $blueprint->setController('Oxygen\Preferences\Controller\PreferencesController');
+    $blueprint->setController(PreferencesController::class);
     $blueprint->setIcon('cog');
 
     $blueprint->setToolbarOrders([
