@@ -20,7 +20,7 @@
      ===================== -->
 
 <div class="Block">
-    {{ $header->render()}}
+    {!! $header->render() !!}
 </div>
 
 @include('oxygen/mod-preferences::updateForm', ['blueprint' => $blueprint, 'schema' => $schema])
