@@ -26,7 +26,7 @@ class PreferencesController extends BlueprintController {
      * @param BlueprintManager $manager
      */
     public function __construct(BlueprintManager $manager) {
-        parent::__construct($manager, 'Preferences');
+        parent::__construct($manager->get('Preferences'));
     }
 
     /**
