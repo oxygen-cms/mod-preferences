@@ -8,11 +8,11 @@
 
     $header = Header::fromBlueprint(
         $blueprint,
-        Preferences::isRoot($group) ? Lang::get('oxygen/preferences::ui.home.title') : Preferences::group($group)
+        Preferences::isRootKey($group) ? Lang::get('oxygen/preferences::ui.home.title') : Preferences::getGroupName($group)
     );
 
     if(!Preferences::isRoot($group)) {
-        $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::parentGroup($group)));
+        $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($group)));
     }
 
 ?>
@@ -31,13 +31,13 @@
 
 <div class="Block">
     <?php
-        foreach(Preferences::get($group) as $key => $item):
+        foreach(Preferences::getSchema($group) as $key => $item):
             $key = $group . ($group === null ? '' : '.') . $key;
 
             if(is_array($item)):
                 $header = Header::fromBlueprint(
                     $blueprint,
-                    Preferences::group($key),
+                    Preferences::getGroupName($key),
                     ['group' => $key],
                     Header::TYPE_SMALL,
                     'group'
@@ -58,7 +58,7 @@
         endforeach;
     ?>
 
-    @if(empty(Preferences::get($group)))
+    @if(empty(Preferences::getSchema($group)))
         <h2 class="heading-gamma margin-large">
             @lang('oxygen/preferences::ui.home.noItems')
         </h2>

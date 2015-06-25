@@ -36,7 +36,7 @@ class PreferencesController extends BlueprintController {
      * @return Response
      */
     public function getView($group = null) {
-        $title = Preferences::isRoot($group) ? '' : Preferences::group($group) . ' ';
+        $title = Preferences::isRootKey($group) ? '' : Preferences::getGroupName($group) . ' ';
         $title .= Lang::get('oxygen/mod-preferences::ui.home.title');
 
         return View::make('oxygen/mod-preferences::list', [
@@ -94,12 +94,11 @@ class PreferencesController extends BlueprintController {
      */
 
     protected function getSchema($key) {
-        if(!Preferences::has($key)) {
+        if(!Preferences::hasSchema($key)) {
             throw new NotFoundHttpException();
         }
 
-        $schema = Preferences::get($key);
-        $schema->loadRepository();
+        $schema = Preferences::getSchema($key);
         return $schema;
     }
 
