@@ -11,7 +11,7 @@
         Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
-    $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::parentGroup($schema->getKey())));
+    $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));
 
 ?>
 
