@@ -8,7 +8,7 @@
 
     $header = Header::fromBlueprint(
         $blueprint,
-        Lang::get('oxygen/preferences::ui.update.title', ['name' => $schema->getTitle()])
+        Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
     $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::parentGroup($schema->getKey())));
@@ -23,6 +23,6 @@
     {{ $header->render()}}
 </div>
 
-@include('oxygen/preferences::updateForm', ['blueprint' => $blueprint, 'schema' => $schema])
+@include('oxygen/mod-preferences::updateForm', ['blueprint' => $blueprint, 'schema' => $schema])
 
 @stop

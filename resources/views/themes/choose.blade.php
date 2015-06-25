@@ -10,7 +10,7 @@ use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\H
 
 $header = Header::fromBlueprint(
         $blueprint,
-        Lang::get('oxygen/preferences::ui.update.title', ['name' => $schema->getTitle()])
+        Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
     $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::parentGroup($schema->getKey())));
@@ -36,7 +36,7 @@ $header = Header::fromBlueprint(
 
 @if(empty($themes))
     <div class="Block">
-        <h3 class="heading-gamma margin-large">@lang('oxygen/preferences::ui.theme.choose.empty')</h3>
+        <h3 class="heading-gamma margin-large">@lang('oxygen/mod-preferences::ui.theme.choose.empty')</h3>
     </div>
 @endif
 
@@ -75,8 +75,8 @@ $header = Header::fromBlueprint(
     <?php
         if(!isset($footer)) {
             $footer = new Row([
-                new ButtonToolbarItem(Lang::get('oxygen/preferences::ui.update.close'), $blueprint->getRouteName('getView')),
-                new SubmitToolbarItem(Lang::get('oxygen/preferences::ui.update.submit'))
+                new ButtonToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.close'), $blueprint->getRouteName('getView')),
+                new SubmitToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.submit'))
             ]);
             $footer->isFooter = true;
         }

@@ -42,8 +42,8 @@ foreach($schema->getFields() as $groupName => $groupItems) {
 
 if(!isset($footer)) {
     $footer = new Row([
-            new ButtonToolbarItem(Lang::get('oxygen/preferences::ui.update.close'), $blueprint->getAction('getView')),
-            new SubmitToolbarItem(Lang::get('oxygen/preferences::ui.update.submit'))
+            new ButtonToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.close'), $blueprint->getAction('getView')),
+            new SubmitToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.submit'))
     ]);
     $footer->isFooter = true;
 }

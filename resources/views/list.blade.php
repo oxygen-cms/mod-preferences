@@ -8,10 +8,10 @@
 
     $header = Header::fromBlueprint(
         $blueprint,
-        Preferences::isRootKey($group) ? Lang::get('oxygen/preferences::ui.home.title') : Preferences::getGroupName($group)
+        Preferences::isRootKey($group) ? Lang::get('oxygen/mod-preferences::ui.home.title') : Preferences::getGroupName($group)
     );
 
-    if(!Preferences::isRoot($group)) {
+    if(!Preferences::isRootKey($group)) {
         $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($group)));
     }
 
@@ -22,7 +22,7 @@
      ===================== -->
 
 <div class="Block">
-    {{ $header->render()}}
+    {!! $header->render() !!}
 </div>
 
 <!-- =====================
@@ -60,7 +60,7 @@
 
     @if(empty(Preferences::getSchema($group)))
         <h2 class="heading-gamma margin-large">
-            @lang('oxygen/preferences::ui.home.noItems')
+            @lang('oxygen/mod-preferences::ui.home.noItems')
         </h2>
     @endif
 </div>
