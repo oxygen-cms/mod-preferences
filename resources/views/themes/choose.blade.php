@@ -2,46 +2,43 @@
 
 @section('content')
 
-<?php
+    <?php
 
-use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Header\Header;
-    use Oxygen\Core\Html\Form\Footer;
-    use Oxygen\Core\Html\Form\EditableField;use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
+    use Oxygen\Core\Html\Form\Form;
+    use Oxygen\Core\Html\Form\Label;
+    use Oxygen\Core\Html\Form\Row;
+    use Oxygen\Core\Html\Header\Header;
+    use Oxygen\Core\Html\Form\EditableField;
+    use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
+    use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
 
-$header = Header::fromBlueprint(
+    $header = Header::fromBlueprint(
         $blueprint,
         Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
-    $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::parentGroup($schema->getKey())));
-
-?>
-
-<!-- =====================
-            HEADER
-     ===================== -->
-
-<div class="Block">
-    {{ $header->render()}}
-</div>
-
-<?php
-
-    $form = new Form($blueprint->getAction('putUpdate'));
-    $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
-    $form->addClass('Form--themes');
+    $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));
 
     $themes = Theme::all();
-?>
 
-@if(empty($themes))
+    ?>
+
+    <!-- =====================
+                HEADER
+         ===================== -->
+
     <div class="Block">
-        <h3 class="heading-gamma margin-large">@lang('oxygen/mod-preferences::ui.theme.choose.empty')</h3>
+        {!! $header->render() !!}
     </div>
-@endif
 
-<div class="Row--layout Row--equalCells">
-    <?php
+    @if(empty($themes))
+        <div class="Block">
+            <h3 class="heading-gamma margin-large">@lang('oxygen/mod-preferences::ui.theme.choose.empty')</h3>
+        </div>
+    @endif
+
+    <div class="Row--layout Row--equalCells">
+        <?php
         foreach($themes as $theme):
             $itemHeader = new Header($theme->getName(), ['span' => 'oneThird'], Header::TYPE_BLOCK);
             $itemHeader->addClass('Link-cursor');
@@ -56,49 +53,51 @@ $header = Header::fromBlueprint(
             }
             echo $itemHeader->render();
         endforeach;
-    ?>
-</div>
+        ?>
+    </div>
 
-<div class="Block js-hide">
     <?php
+
+        $form = new Form($blueprint->getAction('putUpdate'));
+        $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
+        $form->setRouteParameters(['schema' => $schema]);
+        $form->addClass('Form--themes');
+
         $field = $schema->getField('theme');
-        if($field->editable) {
-            $editableField = new EditableField($field, Theme::getCurrentKey());
-            $label = new Label($field->getMeta());
-            $row = new Row([$label, $editableField]);
-            echo $row->render();
-        }
-    ?>
-</div>
+        $editableField = new EditableField($field, app('request'), Theme::getLoader()->getCurrentTheme());
+        $label = new Label($field);
+        $row = new Row([$label, $editableField]);
+        echo $row->render();
 
-<div class="Block js-hide">
-    <?php
+        $form->addContent('<div class="Block js-hide">' . $row->render() . '</div>');
+
         if(!isset($footer)) {
             $footer = new Row([
-                new ButtonToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.close'), $blueprint->getRouteName('getView')),
-                new SubmitToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.submit'))
+                    new ButtonToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.close'), $blueprint->getAction('getView')),
+                    new SubmitToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.submit'))
             ]);
             $footer->isFooter = true;
         }
-        echo $footer->render();
-    ?>
-</div>
 
-<?php echo Form::close(); ?>
+        $form->addContent('<div class="Block js-hide">' . $footer->render() . '</div>');
+
+        echo $form->render();
+
+    ?>
 
 @stop
 
 <?php Event::listen('oxygen.layout.page.after', function() { ?>
 
-    <script>
-        var Oxygen = Oxygen || {};
-        Oxygen.load = Oxygen.load || [];
-        Oxygen.load.push(function() {
-            $("[data-index]").on("click", function() {
-                $('[name="theme"]').val($(event.currentTarget).attr("data-index"));
-                $(".Form--themes").submit();
-            });
+<script>
+    var Oxygen = Oxygen || {};
+    Oxygen.load = Oxygen.load || [];
+    Oxygen.load.push(function() {
+        $("[data-index]").on("click", function() {
+            $('[name="theme"]').val($(event.currentTarget).attr("data-index"));
+            $(".Form--themes").submit();
         });
-    </script>
+    });
+</script>
 
 <?php }); ?>
