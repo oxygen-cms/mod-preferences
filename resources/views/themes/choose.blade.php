@@ -60,7 +60,7 @@
 
         $form = new Form($blueprint->getAction('putUpdate'));
         $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
-        $form->setRouteParameters(['schema' => $schema]);
+        $form->setRouteParameterArguments(['schema' => $schema]);
         $form->addClass('Form--themes');
 
         $field = $schema->getField('theme');

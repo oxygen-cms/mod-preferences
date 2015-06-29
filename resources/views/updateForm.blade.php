@@ -9,7 +9,7 @@ use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
 
 $form = new Form($blueprint->getAction('putUpdate'));
 $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
-$form->setRouteParameters(['schema' => $schema]);
+$form->setRouteParameterArguments(['schema' => $schema]);
 
 foreach($schema->getFields() as $groupName => $groupItems) {
     $form->addContent('<div class="Block">');
