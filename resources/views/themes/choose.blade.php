@@ -67,7 +67,6 @@
         $editableField = new EditableField($field, app('request'), Theme::getLoader()->getCurrentTheme());
         $label = new Label($field);
         $row = new Row([$label, $editableField]);
-        echo $row->render();
 
         $form->addContent('<div class="Block js-hide">' . $row->render() . '</div>');
 
