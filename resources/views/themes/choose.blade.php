@@ -39,20 +39,27 @@
 
     <div class="Row--layout Row--equalCells">
         <?php
-        foreach($themes as $theme):
-            $itemHeader = new Header($theme->getName(), ['span' => 'oneThird'], Header::TYPE_BLOCK);
-            $itemHeader->addClass('Link-cursor');
-            if($theme == Theme::current()) {
-                $itemHeader->setSubtitle('(current)');
+
+            try {
+                $currentTheme = Theme::current();
+            } catch (\Oxygen\Theme\ThemeNotFoundException $e) {
+                $currentTheme = null;
             }
-            $itemHeader->setIndex($theme->getKey());
-            if($theme->hasImage()) {
-                $itemHeader->setContent('<img src="' . $theme->getImage() . '">');
-            } else {
-                $itemHeader->setContent('<div class="Icon-container"><span class="Icon Icon--gigantic Icon--light Icon-picture-o"></span></div>');
+
+            foreach($themes as $theme) {
+                $itemHeader = new Header($theme->getName(), ['span' => 'oneThird'], Header::TYPE_BLOCK);
+                $itemHeader->addClass('Link-cursor');
+                if($theme == $currentTheme) {
+                    $itemHeader->setSubtitle('(current)');
+                }
+                $itemHeader->setIndex($theme->getKey());
+                if($theme->hasImage()) {
+                    $itemHeader->setContent('<img src="' . $theme->getImage() . '">');
+                } else {
+                    $itemHeader->setContent('<div class="Icon-container"><span class="Icon Icon--gigantic Icon--light Icon-picture-o"></span></div>');
+                }
+                echo $itemHeader->render();
             }
-            echo $itemHeader->render();
-        endforeach;
         ?>
     </div>
 
