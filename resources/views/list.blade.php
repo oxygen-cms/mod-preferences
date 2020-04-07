@@ -8,7 +8,7 @@
 
     $header = Header::fromBlueprint(
         $blueprint,
-        Preferences::isRootKey($group) ? Lang::get('oxygen/mod-preferences::ui.home.title') : Preferences::getGroupName($group)
+        Preferences::isRootKey($group) ? __('oxygen/mod-preferences::ui.home.title') : Preferences::getGroupName($group)
     );
 
     if(!Preferences::isRootKey($group)) {

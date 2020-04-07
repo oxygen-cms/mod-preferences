@@ -8,7 +8,7 @@
 
     $header = Header::fromBlueprint(
         $blueprint,
-        Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
+        __('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
     $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));

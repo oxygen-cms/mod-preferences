@@ -2,7 +2,7 @@
 
 use OxygenModule\Preferences\Controller\PreferencesController;
 
-Blueprint::make('Preferences', function($blueprint) {
+Blueprint::make('Preferences', function(\Oxygen\Core\Blueprint\Blueprint $blueprint) {
     $blueprint->setController(PreferencesController::class);
     $blueprint->setIcon('cog');
 

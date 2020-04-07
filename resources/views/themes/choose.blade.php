@@ -14,7 +14,7 @@
 
     $header = Header::fromBlueprint(
         $blueprint,
-        Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
+        __('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
     $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));
@@ -79,8 +79,8 @@
 
         if(!isset($footer)) {
             $footer = new Row([
-                    new ButtonToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.close'), $blueprint->getAction('getView')),
-                    new SubmitToolbarItem(Lang::get('oxygen/mod-preferences::ui.update.submit'))
+                    new ButtonToolbarItem(__('oxygen/mod-preferences::ui.update.close'), $blueprint->getAction('getView')),
+                    new SubmitToolbarItem(__('oxygen/mod-preferences::ui.update.submit'))
             ]);
             $footer->isFooter = true;
         }

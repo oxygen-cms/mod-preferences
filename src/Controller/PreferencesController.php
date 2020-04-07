@@ -2,21 +2,16 @@
 
 namespace OxygenModule\Preferences\Controller;
 
-use Exception;
-
+use Illuminate\Validation\Factory;
+use Illuminate\View\View;
 use Oxygen\Preferences\Schema;
-use View;
-use Input;
-use Lang;
-use Response;
-use Validator;
-use Preferences;
-
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use Oxygen\Core\Blueprint\BlueprintManager;
 use Oxygen\Core\Controller\BlueprintController;
 use Oxygen\Core\Http\Notification;
+use Illuminate\Http\Response;
+use Oxygen\Preferences\Facades\Preferences;
+use Illuminate\Http\Request;
 
 class PreferencesController extends BlueprintController {
 
@@ -24,6 +19,8 @@ class PreferencesController extends BlueprintController {
      * Constructs the AuthController.
      *
      * @param BlueprintManager $manager
+     * @throws \Oxygen\Core\Blueprint\BlueprintNotFoundException
+     * @throws \ReflectionException
      */
     public function __construct(BlueprintManager $manager) {
         parent::__construct($manager->get('Preferences'));
@@ -33,13 +30,13 @@ class PreferencesController extends BlueprintController {
      * Lists preferences for that group.
      *
      * @param string $group
-     * @return Response
+     * @return View
      */
     public function getView($group = null) {
         $title = Preferences::isRootKey($group) ? '' : Preferences::getGroupName($group) . ' ';
-        $title .= Lang::get('oxygen/mod-preferences::ui.home.title');
+        $title .= __('oxygen/mod-preferences::ui.home.title');
 
-        return View::make('oxygen/mod-preferences::list', [
+        return view('oxygen/mod-preferences::list', [
             'group' => $group,
             'title' => $title
         ]);
@@ -48,31 +45,33 @@ class PreferencesController extends BlueprintController {
     /**
      * Form to update a preferences.
      *
-     * @return Response
+     * @return View
      */
     public function getUpdate($key) {
         $schema = $this->getSchema($key);
 
         $view = $schema->hasView() ? $schema->getView() : 'oxygen/mod-preferences::update';
 
-        return View::make($view, [
+        return view($view, [
             'schema' => $schema,
-            'title' => Lang::get('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()]) . ' ' . Lang::get('oxygen/mod-preferences::ui.home.title')
+            'title' => __('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()]) . ' ' . __('oxygen/mod-preferences::ui.home.title')
         ]);
     }
 
     /**
      * Updates the preferences
      *
+     * @param string $key
+     * @param Factory $validationFactory
      * @return Response
      */
-    public function putUpdate($key) {
+    public function putUpdate($key, Factory $validationFactory, Request $request) {
         $schema = $this->getSchema($key);
 
-        $input = $this->preferencesFromInput(Input::except('_method', '_token'));
-        $validator = Validator::make($input, $schema->getValidationRules());
+        $input = $this->preferencesFromInput($request->except('_method', '_token'));
+        $validator = $validationFactory->make($input, $schema->getValidationRules());
         if($validator->fails()) {
-            return Response::notification(
+            return notify(
                 new Notification($validator->messages()->first(), Notification::FAILED)
             );
         }
@@ -80,8 +79,8 @@ class PreferencesController extends BlueprintController {
         $schema->getRepository()->fill($input);
         $schema->storeRepository();
 
-        return Response::notification(
-            new Notification(Lang::get('oxygen/mod-preferences::messages.updated')),
+        return notify(
+            new Notification(__('oxygen/mod-preferences::messages.updated')),
             ['refresh' => true, 'hardRedirect' => true]
         );
     }
@@ -108,7 +107,6 @@ class PreferencesController extends BlueprintController {
      * @param array $input
      * @return array
      */
-
     protected function preferencesFromInput(array $input) {
         $return = [];
 
