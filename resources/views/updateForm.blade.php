@@ -30,7 +30,7 @@ foreach($schema->getFields() as $groupName => $groupItems) {
             if(!$field->editable) {
                 continue;
             }
-            $editable = new EditableField($field, app('request'), $schema->getRepository()->get($field->name));
+            $editable = new EditableField($field, $schema->getRepository()->get($field->name));
             $label = new Label($field);
             $row = new Row([$label, $editable]);
             $form->addContent($row);

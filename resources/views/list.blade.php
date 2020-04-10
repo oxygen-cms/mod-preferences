@@ -23,13 +23,7 @@
 
 <div class="Block">
     {!! $header->render() !!}
-</div>
 
-<!-- =====================
-            HEADER
-     ===================== -->
-
-<div class="Block">
     <?php
         foreach(Preferences::getSchema($group) as $key => $item):
             $key = $group . ($group === null ? '' : '.') . $key;
@@ -39,7 +33,7 @@
                     $blueprint,
                     Preferences::getGroupName($key),
                     ['group' => $key],
-                    Header::TYPE_SMALL,
+                    Header::TYPE_NORMAL,
                     'group'
                 );
 
@@ -49,7 +43,7 @@
                     $blueprint,
                     $item->getTitle(),
                     ['schema' => $item],
-                    Header::TYPE_SMALL,
+                    Header::TYPE_NORMAL,
                     'item'
                 );
 

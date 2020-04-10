@@ -37,7 +37,7 @@
         </div>
     @endif
 
-    <div class="Row--layout Row--equalCells">
+    <div class="Row--equalCells Row--wrap ThemeChooser">
         <?php
 
             try {
@@ -56,7 +56,7 @@
                 if($theme->hasImage()) {
                     $itemHeader->setContent('<img src="' . $theme->getImage() . '">');
                 } else {
-                    $itemHeader->setContent('<div class="Icon-container"><span class="Icon Icon--gigantic Icon--light Icon-picture-o"></span></div>');
+                    $itemHeader->setContent('<div class="Icon-container"><span class="fa Icon--gigantic Icon--light fa-picture-o"></span></div>');
                 }
                 echo $itemHeader->render();
             }
@@ -71,7 +71,7 @@
         $form->addClass('Form--themes');
 
         $field = $schema->getField('theme');
-        $editableField = new EditableField($field, app('request'), Theme::getLoader()->getCurrentTheme());
+        $editableField = new EditableField($field, Theme::getLoader()->getCurrentTheme());
         $label = new Label($field);
         $row = new Row([$label, $editableField]);
 
@@ -92,18 +92,3 @@
     ?>
 
 @stop
-
-<?php Event::listen('oxygen.layout.page.after', function() { ?>
-
-<script>
-    var Oxygen = Oxygen || {};
-    Oxygen.load = Oxygen.load || [];
-    Oxygen.load.push(function() {
-        $("[data-index]").on("click", function() {
-            $('[name="theme"]').val($(event.currentTarget).attr("data-index"));
-            $(".Form--themes").submit();
-        });
-    });
-</script>
-
-<?php }); ?>
