@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "oxygen/core": "~0.7.0",
-        "oxygen/preferences": "~0.3.0",
+        "oxygen/core": "~0.8.0",
+        "oxygen/preferences": "~0.3.5",
         "oxygen/theme": "~0.2.0",
         "illuminate/support": "~6.0"
     },
