@@ -24,7 +24,6 @@ class PreferencesServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-
 	public function boot() {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen/mod-preferences');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'oxygen/mod-preferences');
@@ -34,21 +33,6 @@ class PreferencesServiceProvider extends ServiceProvider {
         $this->app[PreferencesManager::class]->extendSchema('appearance.themes', function($schema) {
             $schema->setView('oxygen/mod-preferences::themes.choose');
         });
-
-        $this->addNavigationItems();
-	}
-
-	/**
-	 * Adds items the the admin navigation.
-	 *
-	 * @return void
-	 */
-
-	public function addNavigationItems() {
-		$blueprint = $this->app[BlueprintManager::class]->get('Preferences');
-		$nav = $this->app[Navigation::class];
-
-		$nav->add($blueprint->getToolbarItem('getView'));
 	}
 
     /**
