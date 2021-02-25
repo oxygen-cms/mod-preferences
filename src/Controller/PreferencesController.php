@@ -4,6 +4,7 @@ namespace OxygenModule\Preferences\Controller;
 
 use Illuminate\Validation\Factory;
 use Illuminate\View\View;
+use Oxygen\Preferences\PreferencesManager;
 use Oxygen\Preferences\Schema;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Oxygen\Core\Blueprint\BlueprintManager;
@@ -14,6 +15,10 @@ use Oxygen\Preferences\Facades\Preferences;
 use Illuminate\Http\Request;
 
 class PreferencesController extends BlueprintController {
+    /**
+     * @var PreferencesManager
+     */
+    private $preferences;
 
     /**
      * Constructs the AuthController.
@@ -22,8 +27,9 @@ class PreferencesController extends BlueprintController {
      * @throws \Oxygen\Core\Blueprint\BlueprintNotFoundException
      * @throws \ReflectionException
      */
-    public function __construct(BlueprintManager $manager) {
+    public function __construct(BlueprintManager $manager, PreferencesManager $preferences) {
         parent::__construct($manager->get('Preferences'));
+        $this->preferences = $preferences;
     }
 
     /**
@@ -33,7 +39,7 @@ class PreferencesController extends BlueprintController {
      * @return View
      */
     public function getView($group = null) {
-        $title = Preferences::isRootKey($group) ? '' : Preferences::getGroupName($group) . ' ';
+        $title = $this->preferences->isRootKey($group) ? '' : $this->preferences->getGroupName($group) . ' ';
         $title .= __('oxygen/mod-preferences::ui.home.title');
 
         return view('oxygen/mod-preferences::list', [
@@ -93,11 +99,11 @@ class PreferencesController extends BlueprintController {
      */
 
     protected function getSchema($key) {
-        if(!Preferences::hasSchema($key)) {
+        if(!$this->preferences->hasSchema($key)) {
             throw new NotFoundHttpException();
         }
 
-        $schema = Preferences::getSchema($key);
+        $schema = $this->preferences->getSchema($key);
         return $schema;
     }
 
