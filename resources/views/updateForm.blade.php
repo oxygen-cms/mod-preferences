@@ -12,8 +12,6 @@ $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(tr
 $form->setRouteParameterArguments(['schema' => $schema]);
 
 foreach($schema->getFields() as $groupName => $groupItems) {
-    $form->addContent('<div class="Block">');
-
     if($groupName !== '') {
         $form->addContent('<div class="Row">
         <h2 class="heading-beta">' . e($groupName) . '</h2>
@@ -30,14 +28,19 @@ foreach($schema->getFields() as $groupName => $groupItems) {
             if(!$field->editable) {
                 continue;
             }
+            try {
+                $themeValue = app(\Oxygen\Preferences\ThemeSpecificPreferencesFallback::class)->getPreferenceValue($schema->getKey() . '::' . $field->name);
+                $field->placeholder = $themeValue . ' (default for current theme)';
+            } catch(\Oxygen\Preferences\PreferenceNotFoundException $e) {
+                // do nothing
+            }
+            $field->attributes['class'] = 'Form-input--fullWidth';
             $editable = new EditableField($field, $schema->getRepository()->get($field->name));
             $label = new Label($field);
             $row = new Row([$label, $editable]);
             $form->addContent($row);
         }
     }
-
-    $form->addContent('</div>');
 }
 
 if(!isset($footer)) {
@@ -48,7 +51,7 @@ if(!isset($footer)) {
     $footer->isFooter = true;
 }
 
-$form->addContent('<div class="Block">')->addContent($footer)->addContent('</div>');
+$form->addContent($footer);
 
 echo $form->render();
 
