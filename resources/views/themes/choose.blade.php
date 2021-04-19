@@ -11,6 +11,8 @@
     use Oxygen\Core\Html\Form\EditableField;
     use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
     use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
+    use Oxygen\Theme\ThemeManager;
+    use Oxygen\Theme\ThemeNotFoundException;
 
     $header = Header::fromBlueprint(
         $blueprint,
@@ -19,7 +21,8 @@
 
     $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));
 
-    $themes = Theme::all();
+    $themeManager = app(ThemeManager::class);
+    $themes = $themeManager->all();
 
     ?>
 
@@ -41,8 +44,8 @@
         <?php
 
             try {
-                $currentTheme = Theme::current();
-            } catch (\Oxygen\Theme\ThemeNotFoundException $e) {
+                $currentTheme = $themeManager->current();
+            } catch (ThemeNotFoundException $e) {
                 $currentTheme = null;
             }
 
@@ -71,7 +74,7 @@
         $form->addClass('Form--themes');
 
         $field = $schema->getField('theme');
-        $editableField = new EditableField($field, Theme::getLoader()->getCurrentTheme());
+        $editableField = new EditableField($field, $themeManager->getLoader()->getCurrentTheme());
         $label = new Label($field);
         $row = new Row([$label, $editableField]);
 

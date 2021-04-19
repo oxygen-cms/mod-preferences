@@ -4,8 +4,10 @@ namespace OxygenModule\Preferences\Controller;
 
 use Illuminate\Validation\Factory;
 use Illuminate\View\View;
+use Oxygen\Core\Blueprint\BlueprintNotFoundException;
 use Oxygen\Preferences\PreferencesManager;
 use Oxygen\Preferences\Schema;
+use ReflectionException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Oxygen\Core\Blueprint\BlueprintManager;
 use Oxygen\Core\Controller\BlueprintController;
@@ -24,8 +26,9 @@ class PreferencesController extends BlueprintController {
      * Constructs the AuthController.
      *
      * @param BlueprintManager $manager
-     * @throws \Oxygen\Core\Blueprint\BlueprintNotFoundException
-     * @throws \ReflectionException
+     * @param PreferencesManager $preferences
+     * @throws BlueprintNotFoundException
+     * @throws ReflectionException
      */
     public function __construct(BlueprintManager $manager, PreferencesManager $preferences) {
         parent::__construct($manager->get('Preferences'));

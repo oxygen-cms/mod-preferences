@@ -11,7 +11,7 @@
         __('oxygen/mod-preferences::ui.update.title', ['name' => $schema->getTitle()])
     );
 
-    $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));
+//    $header->setBackLink(URL::route($blueprint->getRouteName('getView'), Preferences::getParentGroupName($schema->getKey())));
 
 ?>
 
@@ -21,8 +21,9 @@
 
 <div class="Block">
     {!! $header->render() !!}
-</div>
 
-@include('oxygen/mod-preferences::updateForm', ['blueprint' => $blueprint, 'schema' => $schema])
+    @include('oxygen/mod-preferences::updateForm', ['blueprint' => $blueprint, 'schema' => $schema])
+
+</div>
 
 @stop
